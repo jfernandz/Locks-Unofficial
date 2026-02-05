@@ -23,6 +23,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayDeque;
 import java.util.Collection;
@@ -72,6 +73,8 @@ public class LockPickingScreen extends AbstractContainerScreen<LockPickingContai
     protected int currPin;
 
     protected boolean frozen = true;
+    @Nullable
+    private Boolean reiOverlayVisible;
 
     public LockPickingScreen(LockPickingContainer cont, Inventory inv, Component title) {
         super(cont, inv, title);
@@ -121,6 +124,13 @@ public class LockPickingScreen extends AbstractContainerScreen<LockPickingContai
     @Override
     protected void init() {
         super.init();
+        this.reiOverlayVisible = melonslise.locks.client.util.ReiOverlayCompat.captureAndHide();
+    }
+
+    @Override
+    public void removed() {
+        melonslise.locks.client.util.ReiOverlayCompat.restore(this.reiOverlayVisible);
+        super.removed();
     }
 
     @Override
